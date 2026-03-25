@@ -1,7 +1,7 @@
 {
   description = "Placeholder private config for nix-vps";
 
-  outputs = {
+  outputs = { self, ... }: {
     nixosModules.default = import ./modules/shared.nix;
   };
 }

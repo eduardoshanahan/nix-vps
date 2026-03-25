@@ -2,7 +2,7 @@
   description = "nix-vps dev shell";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -190,7 +190,6 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.git
-            pkgs.prek
             pkgs.gitleaks
             pkgs.nodePackages.markdownlint-cli2
             pkgs.sops

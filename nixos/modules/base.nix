@@ -5,6 +5,7 @@
   nix.settings = lib.mkMerge [
     {
       experimental-features = [ "nix-command" "flakes" ];
+      require-sigs = false;
     }
     (lib.mkIf (config.lab.nix.signingKeyFile != null) {
       secret-key-files = [ config.lab.nix.signingKeyFile ];
