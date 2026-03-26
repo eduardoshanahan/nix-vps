@@ -126,11 +126,11 @@
     },
     "private": {
       "locked": {
-        "lastModified": 1774542235,
-        "narHash": "sha256-02TKGhrZvP2nBrCyrqj5kgXxFX3VexvSTxlSpzPku9c=",
+        "lastModified": 1774547761,
+        "narHash": "sha256-2Reii9Kkax1yGSZTLdRJyXj974gEKufgRJbRHCSYhXc=",
         "ref": "main",
-        "rev": "9bbac0585f2cae7d82399e8cba76daf43653ebf3",
-        "revCount": 7,
+        "rev": "f5d78fb2b7424426e90d7d44f4772be747f55b9b",
+        "revCount": 8,
         "type": "git",
         "url": "ssh://git@gitea.internal.example:2222/eduardo/nix-vps-private.git"
       },
