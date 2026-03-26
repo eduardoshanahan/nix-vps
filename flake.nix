@@ -22,6 +22,7 @@
           specialArgs = {
             inherit inputs self;
             vpsRepoRoot = ./.;
+            privateRepoRoot = inputs.private.outPath;
           };
           modules =
           [
