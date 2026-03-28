@@ -32,6 +32,8 @@
             ./nixos/modules/ssh.nix
             ./nixos/modules/docker.nix
             ./nixos/modules/network.nix
+            ./nixos/modules/hardening.nix
+            ./nixos/modules/crowdsec.nix
             inputs.sops-nix.nixosModules.sops
             ./nixos/modules/secrets.nix
             disko.nixosModules.disko
