@@ -10,10 +10,27 @@ in
     # Keep threat detection rules up to date automatically.
     autoUpdateService = true;
 
-    # Install the base Linux and SSH detection collections from the hub.
+    # Install the base Linux collection.
+    # crowdsecurity/sshd collection is NOT used because it includes
+    # crowdsecurity/ssh-time-based-bf which uses the MedianInterval expr
+    # function not supported by crowdsec 1.6.8. Individual sshd components
+    # are installed below, excluding that scenario.
     hub.collections = [
       "crowdsecurity/linux"
-      "crowdsecurity/sshd"
+    ];
+
+    # SSH-specific parsers and scenarios from the sshd collection, minus
+    # ssh-time-based-bf which requires MedianInterval (crowdsec >= 1.6.9).
+    hub.parsers = [
+      "crowdsecurity/sshd-logs"
+      "crowdsecurity/sshd-success-logs"
+    ];
+    hub.scenarios = [
+      "crowdsecurity/ssh-bf"
+      "crowdsecurity/ssh-slow-bf"
+      "crowdsecurity/ssh-cve-2024-6387"
+      "crowdsecurity/ssh-refused-conn"
+      "crowdsecurity/ssh-generic-test"
     ];
 
     # Teach CrowdSec where to read logs from.
