@@ -81,6 +81,13 @@ in
   # secret management required.
   services.crowdsec-firewall-bouncer.enable = true;
 
+  # The upstream NixOS module sets Type=notify expecting crowdsec to call
+  # sd_notify(READY=1). CrowdSec 1.6.8 does not implement systemd notify,
+  # so systemd kills the service after TimeoutStartSec (90s). The service
+  # runs correctly — override to Type=simple so systemd considers it ready
+  # as soon as the process starts.
+  systemd.services.crowdsec.serviceConfig.Type = lib.mkForce "simple";
+
   # The upstream bouncer-register service declares:
   #   DynamicUser = true
   #   StateDirectory = "crowdsec-firewall-bouncer-register crowdsec"
