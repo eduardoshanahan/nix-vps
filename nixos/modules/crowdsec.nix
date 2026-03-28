@@ -10,21 +10,31 @@ in
     # Keep threat detection rules up to date automatically.
     autoUpdateService = true;
 
-    # Install the base Linux collection.
-    # crowdsecurity/sshd collection is NOT used because it includes
-    # crowdsecurity/ssh-time-based-bf which uses the MedianInterval expr
-    # function not supported by crowdsec 1.6.8. Individual sshd components
-    # are installed below, excluding that scenario.
+    # Neither crowdsecurity/linux nor crowdsecurity/sshd collections are used
+    # directly. linux depends on sshd which includes ssh-time-based-bf, and
+    # that scenario uses the MedianInterval expr function not available in
+    # crowdsec 1.6.8 — causing config validation to fail at startup.
+    # Instead, install all components individually:
+    # - whitelist-good-actors: the good-actors postoverflow set (cdn, rdns, seo)
+    # - parsers from the linux collection (without pulling in sshd via linux)
+    # - sshd parsers and scenarios from the sshd collection, minus ssh-time-based-bf
     hub.collections = [
-      "crowdsecurity/linux"
+      "crowdsecurity/whitelist-good-actors"
     ];
 
-    # SSH-specific parsers and scenarios from the sshd collection, minus
-    # ssh-time-based-bf which requires MedianInterval (crowdsec >= 1.6.9).
     hub.parsers = [
+      # linux collection parsers
+      "crowdsecurity/syslog-logs"
+      "crowdsecurity/dateparse-enrich"
+      "crowdsecurity/geoip-enrich"
+      "crowdsecurity/public-dns-allowlist"
+      # sshd collection parsers
       "crowdsecurity/sshd-logs"
       "crowdsecurity/sshd-success-logs"
     ];
+
+    # sshd collection scenarios, minus ssh-time-based-bf which requires
+    # MedianInterval (crowdsec >= 1.6.9, currently on 1.6.8).
     hub.scenarios = [
       "crowdsecurity/ssh-bf"
       "crowdsecurity/ssh-slow-bf"
