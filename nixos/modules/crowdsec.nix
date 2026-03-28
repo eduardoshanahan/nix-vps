@@ -26,12 +26,8 @@
   };
 
   # Enforce CrowdSec ban decisions via nftables.
-  # The bouncer auto-registers with the local CrowdSec LAPI because
-  # registerBouncer.enable defaults to true when services.crowdsec.enable
-  # is true — no manual API key management required.
-  services.crowdsec-firewall-bouncer = {
-    enable = true;
-    # mode is auto-detected: nftables when networking.nftables is the
-    # active firewall backend (NixOS 24.11+ default), iptables otherwise.
-  };
+  # registerBouncer.enable defaults to true when services.crowdsec.enable is
+  # true — the bouncer API key is auto-provisioned via cscli, no manual
+  # secret management required.
+  services.crowdsec-firewall-bouncer.enable = true;
 }

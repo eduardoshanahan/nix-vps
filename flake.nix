@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # nixpkgs-unstable provides crowdsec-firewall-bouncer and replace-secret,
+    # which are not yet in nixos-25.05. The overlay below injects them into
+    # the system pkgs so the upstream crowdsec NixOS modules can reference them.
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +15,7 @@
     private.url = "git+ssh://git@gitea.internal.example:2222/eduardo/nix-vps-private.git?ref=main";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, disko, private, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, flake-utils, disko, private, ... }:
     let
       lib = nixpkgs.lib;
       privateModuleOrNull = name: lib.attrByPath [ "nixosModules" name ] null private;
@@ -26,6 +30,19 @@
           };
           modules =
           [
+            # Overlay packages that are in nixos-unstable but not nixos-25.05,
+            # needed by the upstream crowdsec NixOS modules below.
+            ({ pkgs, ... }: {
+              nixpkgs.overlays = [
+                (_final: _prev: {
+                  crowdsec-firewall-bouncer = nixpkgs-unstable.legacyPackages.${pkgs.system}.crowdsec-firewall-bouncer;
+                  replace-secret = nixpkgs-unstable.legacyPackages.${pkgs.system}.replace-secret;
+                })
+              ];
+            })
+            # Upstream crowdsec NixOS modules (not yet in nixos-25.05).
+            "${nixpkgs-unstable}/nixos/modules/services/security/crowdsec.nix"
+            "${nixpkgs-unstable}/nixos/modules/services/security/crowdsec-firewall-bouncer.nix"
             ./nixos/modules/options.nix
             ./nixos/modules/base.nix
             ./nixos/modules/users.nix
