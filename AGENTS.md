@@ -184,6 +184,27 @@ Use the existing helper scripts instead of rewriting ad hoc commands when possib
 
 If you change a script’s contract, update the relevant docs in the same change.
 
+## Investigation Files
+
+Each service or host area can have an `INVESTIGATION.md` under
+`../nix-vps-private/records/<service>/`. Example:
+`../nix-vps-private/records/uptime-kuma/INVESTIGATION.md`.
+
+Convention:
+
+- **Before working on a service**, check if
+  `../nix-vps-private/records/<service>/INVESTIGATION.md` exists. If it does,
+  read it first — it records verified facts, known failure modes, and working
+  procedures so you avoid repeating past experiments.
+- **If no investigation file exists**, create one before the session ends and
+  capture what you learned: what worked, what did not, and why.
+- **After fixing a problem or discovering new facts**, update the investigation
+  file. Stale files are worse than no file.
+
+Investigation files belong in the private companion (never in the public repo)
+because they often contain real hostnames, internal IPs, credential patterns,
+and operator-specific workflow.
+
 ## Session Continuity
 
 If the task is part of ongoing operational/project work, check:
