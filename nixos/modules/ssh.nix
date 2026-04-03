@@ -11,9 +11,19 @@ in
   services.openssh = {
     enable = true;
     settings = {
+      # Key-only SSH policy for internet-exposed host.
       PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      AuthenticationMethods = "publickey";
       PermitRootLogin = "no";
-      AllowAgentForwarding = "yes";
+      AllowAgentForwarding = "no";
+      X11Forwarding = false;
+      UseDns = false;
+      AllowUsers = [ admin ];
+      LoginGraceTime = "30s";
+      MaxAuthTries = 3;
+      MaxSessions = 4;
+      MaxStartups = "10:30:60";
       AuthorizedKeysFile = "/etc/ssh/authorized_keys/%u";
     };
   };

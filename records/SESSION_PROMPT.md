@@ -2,7 +2,7 @@
 
 Next session continuation for nix-vps work.
 
-## Current State (as of 2026-03-29)
+## Current State (as of 2026-04-03)
 
 All core infrastructure is deployed and working on the OVH VPS.
 
@@ -15,6 +15,25 @@ All core infrastructure is deployed and working on the OVH VPS.
 | WireGuard hub | active — pi-node-a (10.0.0.10) and pi-node-b (10.0.0.10) connected |
 | CrowdSec + firewall bouncer | active |
 | node-exporter, cAdvisor, Promtail | active, scraped by pi-node-b Prometheus |
+
+### Security hardening status (2026-04-03)
+
+- SSH remains key-only (no local password login workflow).
+- SSH daemon policy tightened in `nixos/modules/ssh.nix`:
+  - `AuthenticationMethods = publickey`
+  - `KbdInteractiveAuthentication = false`
+  - `AllowAgentForwarding = no`
+  - `X11Forwarding = false`
+  - `AllowUsers = [ <admin user> ]`
+  - `UseDns = false`
+  - lower auth attack surface (`LoginGraceTime`, `MaxAuthTries`, `MaxSessions`, `MaxStartups`)
+- Docker firewall trust narrowed:
+  - removed broad trusted Docker interfaces in private host config
+  - replaced with explicit iptables INPUT allow rule for TCP/3000 from Docker bridge CIDR `172.16.0.0/12`
+  - this preserves Traefik -> Umami connectivity while reducing bridge-to-host trust
+- Changes were deployed to `vps-host` and verified live:
+  - `sshd -T` shows hardened values (`authenticationmethods publickey`, `allowagentforwarding no`, etc.)
+  - Traefik -> Umami heartbeat is healthy internally and externally
 
 ## VPS Facts
 
@@ -91,7 +110,19 @@ the flake's pinned nixpkgs nixos-rebuild binary, which is older and does not sup
 
 ## What Comes Next
 
-### 1. secondary.example
+### 1. Decide on Docker socket proxy exposure (`wg0:2375`)
 
-Static page or simple site. Domain registered on Namecheap. DNS likely also on Cloudflare.
-Discuss approach (static HTML, Ghost second instance, redirect) before implementing.
+Keep only if actively required by trusted WireGuard peers; otherwise remove from
+`networking.firewall.interfaces.wg0.allowedTCPPorts`.
+
+### 2. Add periodic security drift checks
+
+- new public listeners
+- cert renewal failures
+- unexpected container restarts/image drift
+
+### 3. secondary.example
+
+Static page or simple site. Domain registered on Namecheap. DNS likely also on
+Cloudflare. Discuss approach (static HTML, Ghost second instance, redirect)
+before implementing.
