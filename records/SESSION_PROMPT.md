@@ -40,8 +40,8 @@ All core infrastructure is deployed and working on the OVH VPS.
 | Item | Value |
 |---|---|
 | IP | 203.0.113.10 |
-| SSH user | `eduardo` |
-| SSH key | `/home/eduardo/.ssh/id_ed25519_homelab` |
+| SSH user | `<admin-user>` |
+| SSH key | `/home/<admin-user>/.ssh/id_ed25519_homelab` |
 | Hostname | `vps-host` |
 | OS | NixOS 25.05 |
 | Disk | 40G on `/dev/sda` (BIOS/GRUB boot) |
@@ -50,15 +50,15 @@ All core infrastructure is deployed and working on the OVH VPS.
 | Swap | 2G |
 | Provider | OVH IE |
 
-Connect: `ssh -i ~/.ssh/id_ed25519_homelab eduardo@203.0.113.10`
+Connect: `ssh -i ~/.ssh/id_ed25519_homelab <admin-user>@203.0.113.10`
 
 ## Repo Layout
 
 | Repo | Path | Remote |
 |---|---|---|
-| Public config | `hhlab-insfrastructure/nix-vps/` | `ssh://git@gitea.internal.example:2222/eduardo/nix-vps.git` |
-| Private config | `hhlab-insfrastructure/nix-vps-private/` | `ssh://git@gitea.internal.example:2222/eduardo/nix-vps-private.git` |
-| nix-services | `hhlab-insfrastructure/nix-services/` | `ssh://git@gitea.internal.example:2222/eduardo/nix-services.git` |
+| Public config | `hhlab-insfrastructure/nix-vps/` | `ssh://git@gitea.internal.example:2222/<git-user>/nix-vps.git` |
+| Private config | `hhlab-insfrastructure/nix-vps-private/` | `ssh://git@gitea.internal.example:2222/<git-user>/nix-vps-private.git` |
+| nix-services | `hhlab-insfrastructure/nix-services/` | `ssh://git@gitea.internal.example:2222/<git-user>/nix-services.git` |
 
 ## How to Deploy Changes
 
@@ -68,7 +68,7 @@ nixos-rebuild switch \
   --no-reexec \
   --flake ".#vps-host" \
   --override-input private "path:../nix-vps-private" \
-  --target-host eduardo@203.0.113.10 \
+  --target-host <admin-user>@203.0.113.10 \
   --sudo
 ```
 
@@ -103,8 +103,8 @@ the flake's pinned nixpkgs nixos-rebuild binary, which is older and does not sup
 ## SOPS Secrets
 
 - Age key on VPS: `/var/lib/sops/age.key`
-- VPS public key: `age1rc7n3vupng9ryc4dwyrftpp2usqsfsh0wv8syyg9ktq8ddmh5glqexjd6f`
-- Dev machine public key: `age1flh8zg3474qwhg50gnmaagavdpgneq7rwk7rc4l9pmatkt45qf4su4ztfs`
+- VPS public key: `age1examplevpspublickeyxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+- Dev machine public key: `age1exampledevpublickeyxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 - Secrets file: `nix-vps/secrets/secrets.yaml`
 - Contains: `mysql_root_password`, `mysql_ghost_password`, `cloudflare_api_token`
 
