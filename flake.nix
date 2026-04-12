@@ -71,9 +71,9 @@
       nixosConfigurations = {
         vps-host = mkBaseSystem {
           profile = ./nixos/profiles/vps.nix;
-          hostModule = ./nixos/hosts/vps-host.nix;
+          hostModule = ./nixos/hosts/vps-01.nix;
           privateSharedModule = privateSharedOverrides;
-          privateHostModule = maybePrivateHost "vps-host";
+          privateHostModule = maybePrivateHost "vps-01";
         };
       };
     }
