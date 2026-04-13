@@ -61,7 +61,7 @@ in
 
     # Expose Prometheus metrics on the WireGuard interface so pi-node-b can
     # scrape them. Default is 127.0.0.1 (loopback only).
-    settings.general.prometheus.listen_addr = "10.0.0.10";
+    settings.general.prometheus.listen_addr = "10.100.0.1";
     settings.general.prometheus.listen_port = 6060;
 
     # Path where cscli will write the machine credentials on first run.

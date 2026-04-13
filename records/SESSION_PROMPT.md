@@ -12,7 +12,7 @@ All core infrastructure is deployed and working on the OVH VPS.
 | Traefik (traefikCompose) | active |
 | MySQL | active |
 | Ghost (`primary.example`) | active |
-| WireGuard hub | active — pi-node-a (10.0.0.2) and pi-node-b (10.0.0.3) connected |
+| WireGuard hub | active — rpi-box-01 (10.100.0.2) and rpi-box-02 (10.100.0.3) connected |
 | CrowdSec + firewall bouncer | active |
 | node-exporter, cAdvisor, Promtail | active, scraped by a Prometheus peer |
 
@@ -83,8 +83,8 @@ the flake's pinned nixpkgs nixos-rebuild binary, which is older and does not sup
 - **Compose root**: `/srv/compose`
 - **Private flake override**: All nix commands need `--override-input private "path:../nix-vps-private"` since the public flake points at a placeholder template.
 - **Traefik renamed**: `services.traefik` → `services.traefikCompose` (avoids conflict with NixOS 25.05 built-in Traefik module). Requires explicit `services.traefikCompose.enable = true`.
-- **WireGuard topology**: VPS is hub at `10.0.0.1/24`. Pis connect as spokes. Keys in SOPS secrets.
-- **CrowdSec metrics**: exposed on WireGuard interface `10.0.0.1:6060`, scraped by a Prometheus peer.
+- **WireGuard topology**: VPS is hub at `10.100.0.1/24`. Pis connect as spokes. Keys in SOPS secrets.
+- **CrowdSec metrics**: exposed on WireGuard interface `10.100.0.1:6060`, scraped by a Prometheus peer.
 
 ## Domain and DNS
 
