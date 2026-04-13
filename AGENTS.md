@@ -77,6 +77,10 @@ Rule: if the change is reusable service behavior, it likely belongs in `nix-serv
 - Decrypted secrets must only appear at runtime under `/run/secrets`.
 - `lab.sops.ageKeyFile` must point to a host file, never a Nix store path.
 - Prefer the repo-local `nix develop` shell for hooks and tooling.
+- If you will commit or push, do that work from inside `nix develop` so the
+  expected hook binaries are available.
+- Do not use `--no-verify` to work around missing local tools; enter
+  `nix develop` and rerun the normal workflow instead.
 - Start each session with:
   1. `git fetch origin`
   2. `git pull --rebase origin main`
