@@ -70,7 +70,7 @@ Rule: if the change is reusable service behavior, it likely belongs in `nix-serv
 
 - Treat `../nix-vps-private` as the canonical private source of truth.
 - Before build/rebuild, run:
-  - `nix run "path:$PWD#validate-private-config" -- vps-host`
+  - `nix run "path:$PWD#validate-private-config" -- vps-01`
 - For direct `nix build` and `nixos-rebuild` commands, pass:
   - `--override-input private "path:${NIX_VPS_PRIVATE_FLAKE:-$PWD/../nix-vps-private}"`
 - Never commit plaintext secrets.
@@ -97,9 +97,9 @@ Rule: if the change is reusable service behavior, it likely belongs in `nix-serv
 ## Build, Deploy, And Validation Norms
 
 - Validate private wiring before evaluation/build:
-  - `nix run "path:$PWD#validate-private-config" -- vps-host`
+  - `nix run "path:$PWD#validate-private-config" -- vps-01`
 - Typical deploy flow (from `nix-vps/`):
-  - `nixos-rebuild switch --no-reexec --flake .#vps-host --override-input private "path:../nix-vps-private" --target-host <user>@<host> --sudo`
+  - `nixos-rebuild switch --no-reexec --flake .#vps-01 --override-input private "path:../nix-vps-private" --target-host <user>@<host> --sudo`
 - Keep `records/SESSION_PROMPT.md` current when workflow or known-good commands change.
 
 ## Investigation Files

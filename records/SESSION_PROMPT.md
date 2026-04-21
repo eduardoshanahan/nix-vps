@@ -66,7 +66,7 @@ Connect: `ssh -i ~/.ssh/id_ed25519_homelab <admin-user>@203.0.113.10`
 cd nix-vps
 nixos-rebuild switch \
   --no-reexec \
-  --flake ".#vps-host" \
+  --flake ".#vps-01" \
   --override-input private "path:../nix-vps-private" \
   --target-host <admin-user>@203.0.113.10 \
   --sudo

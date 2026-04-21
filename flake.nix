@@ -69,7 +69,7 @@
     in
     {
       nixosConfigurations = {
-        vps-host = mkBaseSystem {
+        vps-01 = mkBaseSystem {
           profile = ./nixos/profiles/vps.nix;
           hostModule = ./nixos/hosts/vps-01.nix;
           privateSharedModule = privateSharedOverrides;
@@ -126,7 +126,7 @@
               usage
             fi
 
-            node="''${1:-vps-host}"
+            node="''${1:-vps-01}"
             repo_flake_path="path:${self}"
             flake_ref="$repo_flake_path#nixosConfigurations.$node"
             private_flake_dir="''${NIX_VPS_PRIVATE_FLAKE:-$PWD/../nix-vps-private}"
